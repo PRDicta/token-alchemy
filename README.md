@@ -181,7 +181,7 @@ This library is standalone, but it's designed to get better over time when conne
 2. **Promote proven patterns** — patterns that decode correctly across many cold-context transfers gain confidence and can be compressed more aggressively (COLD → WARM → HOT).
 3. **Adapt to the user** — different users and domains have different high-frequency terms. The codebook learns *your* vocabulary, not a generic one.
 
-The reference integration is [The Librarian](https://github.com/PRDicta/The-Librarian), a persistent memory system for LLM assistants. But any system that persists the codebook SQLite database between sessions will benefit.
+The reference integration is [The Librarian](https://github.com/PRDicta/The-Librarian), a persistent memory system for Claude on Cowork. But any system that persists the codebook SQLite database between sessions will benefit.
 
 ## The three-layer approach
 
