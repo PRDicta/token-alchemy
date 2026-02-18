@@ -187,4 +187,13 @@ Layers 1 and 3 are LLM-guided steps — you prompt a model to restructure prose 
 
 ## License
 
-AGPL-3.0 / Commercial dual license — Dicta Technologies Inc., 2026
+Token Alchemy is dual-licensed:
+
+- **Open source** — [GNU Affero General Public License v3.0](LICENSE) for open-source projects, personal use, and academic research.
+- **Commercial** — [Commercial License](COMMERCIAL_LICENSE.md) for proprietary products, SaaS platforms, and enterprise deployments.
+
+If your use case requires embedding Token Alchemy in a closed-source product or distributing it without AGPL obligations, you need a commercial license.
+
+**Pricing and inquiries:** [licensing@usedicta.com](mailto:licensing@usedicta.com) — see [COMMERCIAL_LICENSE.md](COMMERCIAL_LICENSE.md) for tier details.
+
+© 2026 Dicta Technologies Inc.
