@@ -1,4 +1,4 @@
-# Research: YAML + Emoji Prompt Compression
+h# Research: YAML + Emoji Prompt Compression
 
 **February 2026 — Dicta Technologies Inc.**
 
@@ -127,16 +127,6 @@ A persistent memory system (like [The Librarian](https://github.com/PRDicta/The-
 
 The net effect: compression ratios improve over time without manual tuning. The system learns which shortcuts work for *your* prompts and *your* model's decoding behavior.
 
-## Reproducing these results
-
-1. Take a complex prose prompt (1000+ tokens, rich behavioral instructions).
-2. Ask an LLM to convert it to structured YAML (Layer 1).
-3. Run `compress()` from this library (Layer 2).
-4. Ask an LLM to inject emoji semantic anchors into the YAML values (Layer 3).
-5. Use `measure()` to compare token counts.
-6. Run both versions through your target task and compare output quality.
-
-Step 6 is the important one. Token savings mean nothing if output quality degrades. In our testing, it didn't — and in some dimensions, the compressed version was better.
 
 ## Citation
 
@@ -145,3 +135,4 @@ Dicta Technologies Inc. (2026). Three-Layer LLM Prompt Compression:
 YAML Structure, Abbreviation, and Emoji Semantic Injection.
 https://github.com/PRDicta/token-alchemy
 ```
+
