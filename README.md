@@ -24,6 +24,11 @@ The pipeline has three layers:
 
 Layer 3 is the interesting one. See [RESEARCH.md](RESEARCH.md) for the full findings.
 
+## Requirements
+
+- **Python 3.9+**
+- Optional: `tiktoken` for exact Claude BPE token counting (falls back to heuristic without it)
+
 ## Install
 
 ```bash
@@ -49,8 +54,9 @@ pip install -e .
 from prompt_compress import compress, estimate_tokens
 from prompt_compress.compress import measure
 
-original = open("my_prompt_verbose.txt").read()
-compressed = open("my_prompt_yaml.yaml").read()
+# Replace with paths to your own prompt files
+original = open("my_prompt_verbose.txt").read()       # your original prose prompt
+compressed = open("my_prompt_yaml.yaml").read()        # your YAML-compressed version
 
 stats = measure(original, compressed)
 print(f"YAML savings: {stats['yaml_savings_pct']}%")
@@ -175,21 +181,9 @@ This library is standalone, but it's designed to get better over time when conne
 
 The reference integration is [The Librarian](https://github.com/PRDicta/The-Librarian), a persistent memory system for LLM assistants. But any system that persists the codebook SQLite database between sessions will benefit.
 
-## How to do Layer 1 (YAML compression)
+## The three-layer approach
 
-Layer 1 is an LLM task, not a programmatic one. Prompt your model with something like:
-
-> Compress the following instructions into structured YAML. Preserve all semantic content, constraints, and behavioral rules. Use nested keys for hierarchy. Keep it machine-readable — another LLM will consume this directly.
-
-The key insight: LLMs read YAML structure faster and more reliably than prose paragraphs. The hierarchy itself carries meaning that prose has to spell out with transition words.
-
-## How to do Layer 3 (emoji semantic injection)
-
-Layer 3 is also LLM-guided. After YAML compression, inject emoji as semantic anchors:
-
-> Add emoji markers to the YAML values where they serve as semantic density carriers — visual pipeline indicators (→, ⚡, ✓/✗), tonal calibrators, and domain anchors. The emoji should encode meaning a model can decode, not just decoration.
-
-See [RESEARCH.md](RESEARCH.md) for the evidence that this works — 3.2x semantic expansion ratio confirmed across cold-context transfer tests.
+Layers 1 and 3 are LLM-guided steps — you prompt a model to restructure prose into YAML (Layer 1) and to inject emoji as semantic anchors (Layer 3). Layer 2 (abbreviation) is the programmatic step this library handles directly. See [RESEARCH.md](RESEARCH.md) for the theory and test results behind this pipeline.
 
 ## License
 
