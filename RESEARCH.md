@@ -1,4 +1,4 @@
-h# Research: YAML + Emoji Prompt Compression
+# Research: YAML + Emoji Prompt Compression
 
 **February 2026 — Dicta Technologies Inc.**
 
@@ -135,4 +135,5 @@ Dicta Technologies Inc. (2026). Three-Layer LLM Prompt Compression:
 YAML Structure, Abbreviation, and Emoji Semantic Injection.
 https://github.com/PRDicta/token-alchemy
 ```
+
 
