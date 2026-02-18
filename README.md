@@ -2,6 +2,8 @@
 
 Three-layer LLM prompt compression that dramatically reduces token cost on complex workflow prompts — with zero information loss and, in some cases, *improved* model output.
 
+If Token Alchemy was useful to you, please consider [buying me a drink](https://buymeacoffee.com/chief_librarian).
+
 **Example result** on a heavy content-focused prompt:
 
 ```
