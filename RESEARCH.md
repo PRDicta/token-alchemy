@@ -2,6 +2,8 @@
 
 **February 2026 — Dicta Technologies Inc.**
 
+**Tested on:** Claude Opus 4.6 (Anthropic, February 2026) via Cowork and browser, on Windows and macOS.
+
 ## Summary
 
 We compressed a complex 11,473-token heavy content-focused prompt to 5,382 tokens (53% reduction) using a three-layer pipeline: YAML restructuring, programmatic abbreviation, and emoji semantic injection. An expert evaluator found the compressed version produced functionally equivalent output — and outperformed the original on several analytical dimensions.
@@ -64,17 +66,17 @@ We then ran both versions (original prose, compressed YAML+emoji) through a cold
 
 Where the compressed version outperformed:
 
-- Anti-patterns completeness: 12 distinct patterns vs prose's fewer
-- Text emoticon capture: caught patterns the prose version missed
-- Epistemic stance analysis: distinguished written vs spoken register
-- "Do Not Reuse" thoroughness: 22 flagged items vs 18
+- Pattern detection completeness: identified more distinct patterns than the prose version
+- Edge case capture: caught patterns the prose version missed entirely
+- Multi-register analysis: distinguished between registers the original conflated
+- Exclusion list thoroughness: flagged 22% more items for the exclusion criteria
 
 Where the original was stronger:
 
-- Structural fidelity: cleaner benchmarks, more Tier 2 patterns (8 vs 6)
-- Standalone deployment rules: more explicit operational constraints
+- Structural fidelity: cleaner benchmark organization, more secondary-tier patterns
+- Operational constraints: more explicit deployment rules
 
-Expert evaluator verdict: "Doc 1 [original] structurally more faithful, Doc 2 [compressed] better analytical nuance. Ideal = combine both."
+Expert evaluator verdict: the original was structurally more faithful; the compressed version showed better analytical nuance. The ideal would combine both.
 
 #### Semantic density measurement
 
@@ -127,6 +129,13 @@ A persistent memory system (like [The Librarian](https://github.com/PRDicta/The-
 
 The net effect: compression ratios improve over time without manual tuning. The system learns which shortcuts work for *your* prompts and *your* model's decoding behavior.
 
+## Limitations and open questions
+
+- **Single model family.** All testing was performed on Claude (Anthropic). Emoji semantic decoding may behave differently on GPT-4, Gemini, or open-weight models — the BPE vocabularies differ, and emoji training distributions vary across corpora.
+- **One prompt type.** The 53% result comes from a single complex behavioral prompt. Shorter or simpler prompts may see different compression ratios, and the emoji density that works here could overwhelm a lighter prompt.
+- **One evaluator.** The expert evaluation was performed by a single model instance with deep familiarity with the original prompt's expected output. A broader evaluation protocol (multiple evaluators, blind comparison) would strengthen the findings.
+- **Emoji semantics are not guaranteed stable.** Model updates could shift how emoji are decoded. A pattern that works on Claude Opus 4.6 may not decode identically on future releases — the codebook's confidence tracking is designed to catch this, but it's an open risk.
+- **No cross-language testing.** All testing was in English. Emoji semantics may carry different connotations in multilingual or non-English prompt contexts.
 
 ## Citation
 
@@ -135,5 +144,3 @@ Dicta Technologies Inc. (2026). Three-Layer LLM Prompt Compression:
 YAML Structure, Abbreviation, and Emoji Semantic Injection.
 https://github.com/PRDicta/token-alchemy
 ```
-
-
