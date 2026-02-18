@@ -1,0 +1,37 @@
+[
+  {
+    "pattern": "\\bcontent[_\\s]marketing\\b",
+    "replacement": "CM",
+    "flags": "vi",
+    "confidence": 0.8,
+    "stage": 1
+  },
+  {
+    "pattern": "\\bsocial[_\\s]media[_\\s]marketing\\b",
+    "replacement": "SMM",
+    "flags": "vi",
+    "confidence": 0.8,
+    "stage": 1
+  },
+  {
+    "pattern": "\\bcustomer[_\\s]relationship[_\\s]management\\b",
+    "replacement": "CRM",
+    "flags": "vi",
+    "confidence": 0.9,
+    "stage": 1
+  },
+  {
+    "pattern": "\\bpay[_\\s]per[_\\s]click\\b",
+    "replacement": "PPC",
+    "flags": "vi",
+    "confidence": 0.9,
+    "stage": 1
+  },
+  {
+    "pattern": "\\bconversion[_\\s]rate[_\\s]optimization\\b",
+    "replacement": "CRO",
+    "flags": "vi",
+    "confidence": 0.8,
+    "stage": 1
+  }
+]

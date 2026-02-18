@@ -1,0 +1,31 @@
+[build-system]
+requires = ["setuptools>=68.0", "wheel"]
+build-backend = "setuptools.backends._legacy:_Backend"
+
+[project]
+name = "prompt-compress"
+version = "0.1.0"
+description = "Three-layer LLM prompt compression: YAML + Abbreviation + Emoji Semantic Injection"
+readme = "README.md"
+license = {text = "MIT"}
+requires-python = ">=3.9"
+authors = [
+    {name = "Dicta Technologies Inc.", email = "philip@usedicta.com"},
+]
+keywords = ["llm", "prompt", "compression", "yaml", "emoji", "tokens"]
+classifiers = [
+    "Development Status :: 4 - Beta",
+    "Intended Audience :: Developers",
+    "Topic :: Scientific/Engineering :: Artificial Intelligence",
+    "License :: OSI Approved :: MIT License",
+    "Programming Language :: Python :: 3",
+]
+
+[project.optional-dependencies]
+tokenizer = ["tiktoken>=0.5.0"]
+
+[project.urls]
+Homepage = "https://github.com/usedicta/prompt-compress"
+
+[tool.setuptools.packages.find]
+include = ["prompt_compress*"]
