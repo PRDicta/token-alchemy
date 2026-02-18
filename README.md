@@ -1,11 +1,13 @@
-# prompt-compress
+# Token Alchemy
 
-Three-layer LLM prompt compression that achieves **53% token savings** on complex workflow prompts with zero information loss.
+Three-layer LLM prompt compression that dramatically reduces token cost on complex workflow prompts — with zero information loss and, in some cases, *improved* model output.
+
+**Example result** on a heavy content-focused prompt:
 
 ```
-Original:  11,473 tokens (verbose prose prompt)
+Original:  11,473 tokens (verbose prose)
 Compressed: 5,382 tokens (YAML + abbreviation + emoji)
-Savings:    53% — and the compressed version outperformed the original
+Savings:    53% — compressed version outperformed the original on several dimensions
 ```
 
 ## What this does
@@ -25,17 +27,17 @@ Layer 3 is the interesting one. See [RESEARCH.md](RESEARCH.md) for the full find
 ## Install
 
 ```bash
-pip install prompt-compress
+pip install token-alchemy
 
 # For exact token counting (optional, falls back to heuristic):
-pip install prompt-compress[tokenizer]
+pip install token-alchemy[tokenizer]
 ```
 
 Or from source:
 
 ```bash
-git clone https://github.com/usedicta/prompt-compress
-cd prompt-compress
+git clone https://github.com/PRDicta/token-alchemy
+cd token-alchemy
 pip install -e .
 ```
 
@@ -171,7 +173,7 @@ This library is standalone, but it's designed to get better over time when conne
 2. **Promote proven patterns** — patterns that decode correctly across many cold-context transfers gain confidence and can be compressed more aggressively (COLD → WARM → HOT).
 3. **Adapt to the user** — different users and domains have different high-frequency terms. The codebook learns *your* vocabulary, not a generic one.
 
-The reference integration is [The Librarian](https://github.com/usedicta/the-librarian), a persistent memory system for LLM assistants. But any system that persists the codebook SQLite database between sessions will benefit.
+The reference integration is [The Librarian](https://github.com/PRDicta/The-Librarian), a persistent memory system for LLM assistants. But any system that persists the codebook SQLite database between sessions will benefit.
 
 ## How to do Layer 1 (YAML compression)
 
@@ -191,4 +193,4 @@ See [RESEARCH.md](RESEARCH.md) for the evidence that this works — 3.2x semanti
 
 ## License
 
-MIT — Dicta Technologies Inc., 2026
+AGPL-3.0 / Commercial dual license — Dicta Technologies Inc., 2026

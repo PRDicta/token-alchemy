@@ -118,7 +118,7 @@ The `Codebook` class in this library tracks:
 - Which patterns decode correctly in cold-context transfers (`times_decoded_ok`)
 - Confidence scores that gate promotion through compression stages
 
-A persistent memory system (like [The Librarian](https://github.com/usedicta/the-librarian)) can:
+A persistent memory system (like [The Librarian](https://github.com/PRDicta/The-Librarian)) can:
 
 1. **Run `suggest_vocab()` on accumulated text** to find domain-specific terms that appear frequently but aren't in the built-in vocabulary.
 2. **Promote proven patterns** from COLD → WARM → HOT as confidence grows, enabling progressively more aggressive compression.
@@ -143,5 +143,5 @@ Step 6 is the important one. Token savings mean nothing if output quality degrad
 ```
 Dicta Technologies Inc. (2026). Three-Layer LLM Prompt Compression:
 YAML Structure, Abbreviation, and Emoji Semantic Injection.
-https://github.com/usedicta/prompt-compress
+https://github.com/PRDicta/token-alchemy
 ```

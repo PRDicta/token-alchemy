@@ -1,7 +1,7 @@
 """
-prompt-compress: YAML + Abbreviation + Emoji Semantic Injection for LLM prompts.
+Token Alchemy: YAML + Abbreviation + Emoji Semantic Injection for LLM prompts.
 
-Three-layer prompt compression that achieves 53% token savings on complex
+Three-layer prompt compression that dramatically reduces token cost on complex
 workflow prompts with zero information loss — and optionally learns over time.
 """
 
