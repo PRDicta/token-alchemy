@@ -192,7 +192,7 @@ The three-stage model has been validated on a production system — 8 documents,
 | COLD (structural compression) | 39% | Tier 2 drift on judgment-heavy rules |
 | WARM (+ external backstops) | 38% | Quality recovered, then exceeded baseline |
 | HOT (backstops baked in) | 39% | No regression, zero boot dependencies |
-| HOT + compressed profiles | **61%** | No regression |
+| HOT + Full pipeline (all documents) | **61%** | No regression |
 
 The key finding: compression fidelity splits into two tiers. Binary rules (format, length, anti-patterns) survive COLD perfectly. Judgment-heavy rules (energy calibration, conditional logic) need WARM backstops until validated for HOT integration.
 
@@ -222,5 +222,6 @@ If your use case requires embedding Token Alchemy in a closed-source product or 
 **Pricing and inquiries:** [licensing@usedicta.com](mailto:licensing@usedicta.com) — see [COMMERCIAL_LICENSE.md](COMMERCIAL_LICENSE.md) for tier details.
 
 © 2026 Dicta Technologies Inc.
+
 
 
