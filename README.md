@@ -183,6 +183,21 @@ This library is standalone, but it's designed to get better over time when conne
 
 The reference integration is [The Librarian](https://github.com/PRDicta/The-Librarian), a persistent memory system for Claude on Cowork. But any system that persists the codebook SQLite database between sessions will benefit.
 
+### Multi-document results
+
+The three-stage model has been validated on a production system — 8 documents, ~62,000 tokens, 6 iterative tests:
+
+| Stage | Reduction | Quality |
+|-------|-----------|--------|
+| COLD (structural compression) | 39% | Tier 2 drift on judgment-heavy rules |
+| WARM (+ external backstops) | 38% | Quality recovered, then exceeded baseline |
+| HOT (backstops baked in) | 39% | No regression, zero boot dependencies |
+| HOT + compressed profiles | **61%** | No regression |
+
+The key finding: compression fidelity splits into two tiers. Binary rules (format, length, anti-patterns) survive COLD perfectly. Judgment-heavy rules (energy calibration, conditional logic) need WARM backstops until validated for HOT integration.
+
+See [RESEARCH.md](RESEARCH.md) for the full methodology and test progression.
+
 ## The three-layer approach
 
 Layers 1 and 3 are LLM-guided steps — you prompt a model to restructure prose into YAML (Layer 1) and to inject emoji as semantic anchors (Layer 3). Layer 2 (abbreviation) is the programmatic step this library handles directly. See [RESEARCH.md](RESEARCH.md) for the theory and test results behind this pipeline.
@@ -199,3 +214,4 @@ If your use case requires embedding Token Alchemy in a closed-source product or 
 **Pricing and inquiries:** [licensing@usedicta.com](mailto:licensing@usedicta.com) — see [COMMERCIAL_LICENSE.md](COMMERCIAL_LICENSE.md) for tier details.
 
 © 2026 Dicta Technologies Inc.
+
