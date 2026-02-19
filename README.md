@@ -4,12 +4,12 @@ Three-layer LLM prompt compression that dramatically reduces token cost on compl
 
 If Token Alchemy was useful to you, please consider [buying me a drink](https://buymeacoffee.com/chief_librarian).
 
-**Example result** on a heavy content-focused prompt:
+**Example result** on a production multi-document prompt system (8 documents, token counts verified via Anthropic's `count_tokens` API):
 
 ```
-Original:  11,473 tokens (verbose prose)
-Compressed: 5,382 tokens (YAML + abbreviation + emoji)
-Savings:    53% — compressed version outperformed the original on several dimensions
+Original:  64,669 tokens (verbose prose across 8 documents)
+Compressed: 20,986 tokens (YAML + abbreviation + emoji)
+Savings:    67.5% — Tier 1 rules at 100% fidelity, zero quality regression on structural compression
 ```
 
 ## What this does
@@ -185,16 +185,32 @@ The reference integration is [The Librarian](https://github.com/PRDicta/The-Libr
 
 ### Multi-document results
 
-The three-stage model has been validated on a production system — 8 documents, ~62,000 tokens, 6 iterative tests:
+The three-stage model has been validated on a production system — 8 documents, 64,669 tokens, 8 iterative tests. Token counts verified via Anthropic's `count_tokens` API (claude-sonnet-4-5-20250929).
 
-| Stage | Reduction | Quality |
-|-------|-----------|--------|
-| COLD (structural compression) | 39% | Tier 2 drift on judgment-heavy rules |
-| WARM (+ external backstops) | 38% | Quality recovered, then exceeded baseline |
-| HOT (backstops baked in) | 39% | No regression, zero boot dependencies |
-| HOT + Full pipeline (all documents) | **61%** | No regression |
+| Stage | Tokens | Reduction | Quality |
+|-------|--------|-----------|---------|
+| Baseline (uncompressed) | 64,669 | — | Reference |
+| COLD (structural) | ~39,800 | ~38.4% | Tier 2 drift detected |
+| WARM (+backstops) | ~40,000 | ~38.1% | Quality recovered, exceeds baseline |
+| HOT (backstops baked in) | ~39,600 | ~38.8% | No regression, zero boot deps |
+| Emoji-optimized (all docs) | 20,986 | **67.5%** | Tier 1 perfect, minor Tier 2 drift |
 
-The key finding: compression fidelity splits into two tiers. Binary rules (format, length, anti-patterns) survive COLD perfectly. Judgment-heavy rules (energy calibration, conditional logic) need WARM backstops until validated for HOT integration.
+**Per-document breakdown:**
+
+| Document | Original | Compressed | Comp. % | Emoji | Emoji % |
+|----------|----------|------------|---------|-------|---------|
+| Doc A | 20,524t | 13,680t | 33.3% | 6,884t | 66.5% |
+| Doc B | 14,052t | 9,289t | 33.9% | 4,097t | 70.8% |
+| Doc C | 8,549t | 6,525t | 23.7% | 3,166t | 63.0% |
+| Doc D | 3,510t | 2,659t | 24.2% | 1,371t | 60.9% |
+| Doc E | 5,071t | 2,570t | 49.3% | 2,044t | 59.7% |
+| Doc F | 7,839t | 2,474t | 68.4% | 1,635t | 79.1% |
+| Doc G | 5,124t | 2,402t | 53.1% | 1,789t | 65.1% |
+| **Total** | **64,669t** | **39,599t** | **38.8%** | **20,986t** | **67.5%** |
+
+Compressed → Emoji incremental: 47.0% further reduction.
+
+The key finding: compression fidelity splits into two tiers. Binary rules (format, length, anti-patterns) survive COLD perfectly. Judgment-heavy rules (energy calibration, conditional logic) need WARM backstops until validated for HOT integration. Symbolic markers and emoji tokenize ~31% less efficiently per character than English prose — always verify with the actual tokenizer, not `chars/4` estimates.
 
 See [RESEARCH.md](RESEARCH.md) for the full methodology and test progression.
 
@@ -222,6 +238,5 @@ If your use case requires embedding Token Alchemy in a closed-source product or 
 **Pricing and inquiries:** [licensing@usedicta.com](mailto:licensing@usedicta.com) — see [COMMERCIAL_LICENSE.md](COMMERCIAL_LICENSE.md) for tier details.
 
 © 2026 Dicta Technologies Inc.
-
 
 

@@ -2,7 +2,7 @@
 
 How Token Alchemy compresses multi-document prompt systems using a three-stage pipeline.
 
-Token Alchemy was validated across 6 iterative tests on a production system — 8 documents, ~62,000 tokens compressed to ~24,000 tokens (61% reduction) with zero quality regression.
+Token Alchemy was validated across 8 iterative tests on a production system — 8 documents, 64,669 tokens compressed to 20,986 tokens (67.5% reduction) with zero quality regression on structural rules. Token counts verified via Anthropic's `count_tokens` API.
 
 ## Before you start
 
@@ -147,7 +147,7 @@ That's the mechanism Token Alchemy exploits. Every emoji anchor in a compressed 
 
 ### The emoji compliance patterns
 
-These patterns were validated across 6 production tests:
+These patterns were validated across 8 production tests:
 
 **Binding constraint markers:**
 - 🔒 = Mandatory / non-negotiable rule (the model treats what follows as inviolable)
@@ -176,7 +176,7 @@ These patterns were validated across 6 production tests:
 
 Emoji cost 2–4 tokens each (vs 1 token for most common English words). In a compressed prompt, emoji typically account for **~1–2% of total token budget**. This is not where your savings come from.
 
-The value of emoji shows up as **errors that didn’t happen**. In 6 validation tests across a production pipeline, binding constraints marked with emoji achieved 100% compliance. The same constraints expressed in prose showed occasional drift after COLD compression.
+The value of emoji shows up as **errors that didn’t happen**. In 8 validation tests across a production pipeline, binding constraints marked with emoji achieved 100% compliance. The same constraints expressed in prose showed occasional drift after COLD compression.
 
 This means emoji are a Tier 1 compression element — they survive every compression stage with zero loss, and they *strengthen* compliance rather than just preserving it.
 

@@ -150,11 +150,11 @@ https://github.com/PRDicta/token-alchemy
 
 *February 2026 — Dicta Technologies Inc.*
 
-The initial findings above tested compression on a single complex prompt. We subsequently validated the full pipeline on a **production multi-document system**: 8 source documents (content generation workflow, editorial guidelines, voice profiles, company context) totaling approximately 62,000 tokens.
+The initial findings above tested compression on a single complex prompt. We subsequently validated the full pipeline on a **production multi-document system**: 8 source documents (content generation workflow, editorial guidelines, voice profiles, company context) totaling 64,669 tokens (verified via Anthropic's `count_tokens` API, claude-sonnet-4-5-20250929).
 
 ### The Tier 1 / Tier 2 discovery
 
-COLD compression (Layer 1 YAML restructuring applied to all documents simultaneously) achieved 39% reduction — consistent with the single-prompt results. But quality evaluation revealed an important distinction:
+COLD compression (Layer 1 YAML restructuring applied to all documents simultaneously) achieved ~38.4% reduction — consistent with the single-prompt results. But quality evaluation revealed an important distinction:
 
 **Tier 1 rules** — binary, structural constraints (format suppression, length limits, punctuation rules, anti-patterns) — survived COLD compression with zero loss. These rules are self-contained: the compressed version encodes them just as unambiguously as the original.
 
@@ -176,24 +176,26 @@ WARM backstops are earned through testing: each candidate must demonstrate activ
 
 ### Validation progression
 
-Six iterative tests on the production pipeline, each building on the previous:
+Eight iterative tests on the production pipeline, each building on the previous. Token counts verified via Anthropic's `count_tokens` API (claude-sonnet-4-5-20250929).
 
 | Test | Stage | Token Budget | Reduction | Finding |
 |------|-------|-------------|-----------|--------|
-| 1 | COLD only | ~37,800 | 39.1% | Tier 2 drift detected in judgment-heavy rules |
-| 2 | WARM (+4 backstops) | ~38,200 | 38.5% | Quality recovered to baseline |
-| 3 | WARM (+5 backstops) | ~38,300 | 38.3% | Quality exceeds baseline on several dimensions |
-| 4 | WARM (hit rate tracking) | ~38,300 | 38.3% | 100% backstop activation confirmed |
-| 5 | HOT (backstops baked in) | ~38,000 | 38.8% | No regression, zero boot-time dependencies |
-| 6 | HOT + compressed profiles | ~24,200 | 61.0% | No regression after voice profile compression |
+| 1 | COLD only | ~39,800 | ~38.4% | Tier 2 drift detected in judgment-heavy rules |
+| 2 | WARM (+4 backstops) | ~40,000 | ~38.1% | Quality recovered to baseline |
+| 3 | WARM (+5 backstops) | ~40,000 | ~38.1% | Quality exceeds baseline on several dimensions |
+| 4 | WARM (hit rate tracking) | ~40,000 | ~38.1% | 100% backstop activation confirmed |
+| 5 | HOT (backstops baked in) | ~39,600 | ~38.8% | No regression, zero boot-time dependencies |
+| 6–8 | Emoji-optimized (all docs) | 20,986 | **67.5%** | Tier 1 perfect, minor Tier 2 drift at max compression |
 
 Key observations:
 
 - **Backstop hit rate reached 100% by test 4**, confirming all WARM-stage entries were load-bearing. No candidates needed retirement.
 - **HOT integration freed ~300 tokens vs WARM** — backstop text integrated more efficiently inline than as separate entries.
-- **Voice profile compression contributed the largest single-stage gain** (~14,000 tokens). These documents had the highest ratio of verbose prose to binding constraints, making them ideal COLD targets.
-- **Emoji markers (🔒, ❌, 🎯) contributed ~1–2% of token savings but had outsized compliance impact.** They function as visual anchors for binding constraints — their value shows up as errors that *didn't* happen, not as token reduction. Consistent with the semantic injection findings from the single-prompt test.
-- **Conditional register shifts** — the most complex Tier 2 rules — were validated across all 6 tests. These rules require context-dependent activation/suppression decisions (e.g., a pattern that fires when challenging a belief but stays silent for a straightforward explainer). They survived HOT compression intact.
+- **Voice profile compression contributed the largest single-stage reductions** (59–79% per profile). These documents had the highest ratio of verbose prose to binding constraints, making them ideal COLD targets.
+- **Emoji-optimized stage replaces prose connectors with symbolic markers** (🔒, ❌, ✓, →), achieving 47.0% further reduction on top of YAML compression.
+- **Symbolic markers and emoji tokenize ~31% less efficiently per character than English prose**, meaning `chars/4` estimates overstate compression gains — always verify with the actual tokenizer.
+- **Emoji markers contributed ~1–2% of token savings but had outsized compliance impact.** They function as visual anchors for binding constraints — their value shows up as errors that *didn't* happen, not as token reduction.
+- **Conditional register shifts** — the most complex Tier 2 rules — were validated across all 8 tests. These rules require context-dependent activation/suppression decisions (e.g., a pattern that fires when challenging a belief but stays silent for a straightforward explainer). They survived HOT compression intact.
 
 ### Voice profile compression characteristics
 
@@ -206,7 +208,7 @@ Voice profiles — documents that encode a specific person's writing style, tone
 
 ### Emoji compliance mechanism
 
-The emoji findings from the single-prompt test were confirmed and strengthened in the multi-document validation. Emoji markers (🔒, ❌, 🎯) achieved 100% compliance enforcement across all 6 tests — binding constraints marked with emoji never drifted, even after aggressive COLD compression.
+The emoji findings from the single-prompt test were confirmed and strengthened in the multi-document validation. Emoji markers (🔒, ❌, 🎯) achieved 100% compliance enforcement across all 8 tests — binding constraints marked with emoji never drifted, even after aggressive COLD compression.
 
 The mechanism is **distributional compression**: LLMs have learned emoji semantics from training data in a way that activates behavioral clusters, not single meanings. When a model encounters 🔒 in an instruction context, it activates a semantic cluster around *mandatory, non-negotiable, must-comply* — stronger and more reliable than the equivalent prose. Unlike text abbreviations (which map 1:1 to their expansions), emoji map 1:many, encoding entire decision frameworks in 2–4 tokens.
 
@@ -230,8 +232,8 @@ The multi-document validation refined the compression principles:
 The multi-document validation addresses some limitations from the single-prompt test while introducing new ones:
 
 - **Multiple document types tested** (workflow instructions, editorial guidelines, voice profiles, company context) — but still within a single domain and workflow.
-- **Six validation runs** with quality evaluation — but all by the same evaluator model. Blind multi-evaluator comparison remains untested.
+- **Eight validation runs** with quality evaluation — but all by the same evaluator model. Blind multi-evaluator comparison remains untested.
 - **Still single model family** (Claude Opus 4.6). Cross-model validation is needed.
-- **Voice profile compression risk is theoretical** — gestalt drift from synthetic example removal was not observed in 6 tests, but could compound over longer usage cycles. This needs longitudinal tracking.
+- **Voice profile compression risk is theoretical** — gestalt drift from synthetic example removal was not observed in 8 tests, but could compound over longer usage cycles. This needs longitudinal tracking.
 - **HOT integration was tested on one prompt architecture.** Different prompt structures (e.g., multi-turn conversation prompts, tool-use prompts, RAG prompts) may have different Tier 1/Tier 2 boundaries.
 
