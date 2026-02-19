@@ -204,6 +204,16 @@ Voice profiles — documents that encode a specific person's writing style, tone
 - **Risk trade-off**: removing synthetic examples saves significant tokens but loses the *gestalt* calibration they provide. Rules encode what to do; examples encode what it *feels* like. Over many compression cycles, this gestalt drift could compound. The mitigation: examples can be restored selectively as WARM-stage backstops if quality evaluation detects drift.
 - **Emoji signatures survived compression fully intact.** These are binding format constraints (specific emoji at specific positions with specific counts) and fall squarely into Tier 1 — zero loss expected, zero loss observed.
 
+### Emoji compliance mechanism
+
+The emoji findings from the single-prompt test were confirmed and strengthened in the multi-document validation. Emoji markers (🔒, ❌, 🎯) achieved 100% compliance enforcement across all 6 tests — binding constraints marked with emoji never drifted, even after aggressive COLD compression.
+
+The mechanism is **distributional compression**: LLMs have learned emoji semantics from training data in a way that activates behavioral clusters, not single meanings. When a model encounters 🔒 in an instruction context, it activates a semantic cluster around *mandatory, non-negotiable, must-comply* — stronger and more reliable than the equivalent prose. Unlike text abbreviations (which map 1:1 to their expansions), emoji map 1:many, encoding entire decision frameworks in 2–4 tokens.
+
+The original single-prompt finding (249 emoji tokens → ~800 tokens of recoverable meaning, 3.2x semantic expansion ratio, 5/5 decode accuracy including a novel compound instruction) held across the full multi-document system. Combined with the anti-pattern markers (✗, 🚫), emoji create a compliance architecture that costs negligible tokens but prevents the errors that matter most.
+
+This makes emoji a **Tier 1 compression element** — they survive every compression stage with zero loss, and they *strengthen* compliance rather than merely preserving it.
+
 ### Design principles (refined)
 
 The multi-document validation refined the compression principles:
@@ -224,3 +234,4 @@ The multi-document validation addresses some limitations from the single-prompt 
 - **Still single model family** (Claude Opus 4.6). Cross-model validation is needed.
 - **Voice profile compression risk is theoretical** — gestalt drift from synthetic example removal was not observed in 6 tests, but could compound over longer usage cycles. This needs longitudinal tracking.
 - **HOT integration was tested on one prompt architecture.** Different prompt structures (e.g., multi-turn conversation prompts, tool-use prompts, RAG prompts) may have different Tier 1/Tier 2 boundaries.
+
