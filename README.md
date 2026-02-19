@@ -198,6 +198,14 @@ The key finding: compression fidelity splits into two tiers. Binary rules (forma
 
 See [RESEARCH.md](RESEARCH.md) for the full methodology and test progression.
 
+### Emoji as compliance architecture
+
+Emoji in Token Alchemy are not decorative — they are **binding compliance anchors** that enforce constraints more reliably than prose equivalents. The key patterns: 🔒 = mandatory, ❌ = prohibited, 🎯 = target, ⚡ = emphasis, 🔍 = verify, 🚫 = exclusion zone.
+
+Emoji cost ~1–2% of the token budget but enforce ~100% of binding constraints across all compression stages. The mechanism is distributional compression: where a text abbreviation like "SEO" maps 1:1 to its expansion, an emoji like 🔒 maps 1:many — activating an entire behavioral cluster around *mandatory, non-negotiable, must-comply*. In validation testing, 249 emoji tokens encoded approximately 800 tokens of recoverable meaning (3.2x semantic expansion ratio, 5/5 decode accuracy).
+
+See [GUIDE.md](GUIDE.md) for full emoji compliance patterns and usage guidelines.
+
 ## The three-layer approach
 
 Layers 1 and 3 are LLM-guided steps — you prompt a model to restructure prose into YAML (Layer 1) and to inject emoji as semantic anchors (Layer 3). Layer 2 (abbreviation) is the programmatic step this library handles directly. See [RESEARCH.md](RESEARCH.md) for the theory and test results behind this pipeline.
@@ -214,4 +222,5 @@ If your use case requires embedding Token Alchemy in a closed-source product or 
 **Pricing and inquiries:** [licensing@usedicta.com](mailto:licensing@usedicta.com) — see [COMMERCIAL_LICENSE.md](COMMERCIAL_LICENSE.md) for tier details.
 
 © 2026 Dicta Technologies Inc.
+
 
