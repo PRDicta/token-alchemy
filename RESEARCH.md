@@ -144,3 +144,83 @@ Dicta Technologies Inc. (2026). Three-Layer LLM Prompt Compression:
 YAML Structure, Abbreviation, and Emoji Semantic Injection.
 https://github.com/PRDicta/token-alchemy
 ```
+
+
+## Multi-Document Production Validation
+
+*February 2026 — Dicta Technologies Inc.*
+
+The initial findings above tested compression on a single complex prompt. We subsequently validated the full pipeline on a **production multi-document system**: 8 source documents (content generation workflow, editorial guidelines, voice profiles, company context) totaling approximately 62,000 tokens.
+
+### The Tier 1 / Tier 2 discovery
+
+COLD compression (Layer 1 YAML restructuring applied to all documents simultaneously) achieved 39% reduction — consistent with the single-prompt results. But quality evaluation revealed an important distinction:
+
+**Tier 1 rules** — binary, structural constraints (format suppression, length limits, punctuation rules, anti-patterns) — survived COLD compression with zero loss. These rules are self-contained: the compressed version encodes them just as unambiguously as the original.
+
+**Tier 2 rules** — judgment-heavy, context-dependent constraints (energy calibration, conditional register shifts, editorial voice matching) — showed measurable drift. These rules depend on hierarchical context that flattening removes. A compressed instruction like `energy: match_story_mood` loses the nuanced decision framework that the original prose spelled out across multiple paragraphs.
+
+This Tier 1 / Tier 2 split is the most important finding from the multi-document validation. It means COLD compression has a **fidelity ceiling** that varies by rule type — and that ceiling is predictable before you compress.
+
+### Three-stage compression model
+
+The Tier 2 problem led to a three-stage approach:
+
+| Stage | Method | What it does |
+|-------|--------|-------------|
+| **COLD** | Structural compression | YAML restructuring + abbreviation + emoji injection. Aggressive reduction of all documents. |
+| **WARM** | External backstops | Project-scoped knowledge entries loaded alongside compressed prompts at boot. Each backstop targets a specific Tier 2 rule that COLD compression flattened. |
+| **HOT** | Baked-in backstops | Validated backstops integrated directly into the compressed prompts at marked insertion points (`[HOT]` tags). Zero external dependencies — the prompt set becomes fully self-contained. |
+
+WARM backstops are earned through testing: each candidate must demonstrate activation in a validation run before being promoted. HOT integration only happens after a backstop has been validated across multiple runs with 100% activation rate.
+
+### Validation progression
+
+Six iterative tests on the production pipeline, each building on the previous:
+
+| Test | Stage | Token Budget | Reduction | Finding |
+|------|-------|-------------|-----------|--------|
+| 1 | COLD only | ~37,800 | 39.1% | Tier 2 drift detected in judgment-heavy rules |
+| 2 | WARM (+4 backstops) | ~38,200 | 38.5% | Quality recovered to baseline |
+| 3 | WARM (+5 backstops) | ~38,300 | 38.3% | Quality exceeds baseline on several dimensions |
+| 4 | WARM (hit rate tracking) | ~38,300 | 38.3% | 100% backstop activation confirmed |
+| 5 | HOT (backstops baked in) | ~38,000 | 38.8% | No regression, zero boot-time dependencies |
+| 6 | HOT + compressed profiles | ~24,200 | 61.0% | No regression after voice profile compression |
+
+Key observations:
+
+- **Backstop hit rate reached 100% by test 4**, confirming all WARM-stage entries were load-bearing. No candidates needed retirement.
+- **HOT integration freed ~300 tokens vs WARM** — backstop text integrated more efficiently inline than as separate entries.
+- **Voice profile compression contributed the largest single-stage gain** (~14,000 tokens). These documents had the highest ratio of verbose prose to binding constraints, making them ideal COLD targets.
+- **Emoji markers (🔒, ❌, 🎯) contributed ~1–2% of token savings but had outsized compliance impact.** They function as visual anchors for binding constraints — their value shows up as errors that *didn't* happen, not as token reduction. Consistent with the semantic injection findings from the single-prompt test.
+- **Conditional register shifts** — the most complex Tier 2 rules — were validated across all 6 tests. These rules require context-dependent activation/suppression decisions (e.g., a pattern that fires when challenging a belief but stays silent for a straightforward explainer). They survived HOT compression intact.
+
+### Voice profile compression characteristics
+
+Voice profiles — documents that encode a specific person's writing style, tone, vocabulary patterns, and rhetorical devices — showed distinct compression behavior:
+
+- **Highest compression ratios** (50–70% per profile) because they contain the most verbose descriptive prose relative to binding constraints.
+- **Synthetic examples were the largest single cut** (~25% of compressed profile budget). These are calibration aids showing "what good looks like" — useful for human readers but redundant when the binding rules already encode the same constraints.
+- **Risk trade-off**: removing synthetic examples saves significant tokens but loses the *gestalt* calibration they provide. Rules encode what to do; examples encode what it *feels* like. Over many compression cycles, this gestalt drift could compound. The mitigation: examples can be restored selectively as WARM-stage backstops if quality evaluation detects drift.
+- **Emoji signatures survived compression fully intact.** These are binding format constraints (specific emoji at specific positions with specific counts) and fall squarely into Tier 1 — zero loss expected, zero loss observed.
+
+### Design principles (refined)
+
+The multi-document validation refined the compression principles:
+
+1. **Source = CONTENT, profile = FORM.** Compression changes how prompts encode instructions, never what they instruct.
+2. **Binding constraints are sacred.** Quantitative benchmarks, format rules, anti-patterns, and punctuation rules survive every stage untouched.
+3. **Tier 2 rules need backstops until proven stable.** Don't assume judgment-heavy rules compress cleanly — validate, then promote.
+4. **Backstops are earned, not assumed.** Each backstop must demonstrate activation in testing before HOT integration.
+5. **Dense source ≠ longer output.** Compression must preserve length discipline, not just content accuracy. A compressed prompt that produces longer output has regressed, even if the content is correct.
+6. **Originals are always preserved.** Compressed versions live in a dedicated folder. Originals are never overwritten.
+
+### Updated limitations
+
+The multi-document validation addresses some limitations from the single-prompt test while introducing new ones:
+
+- **Multiple document types tested** (workflow instructions, editorial guidelines, voice profiles, company context) — but still within a single domain and workflow.
+- **Six validation runs** with quality evaluation — but all by the same evaluator model. Blind multi-evaluator comparison remains untested.
+- **Still single model family** (Claude Opus 4.6). Cross-model validation is needed.
+- **Voice profile compression risk is theoretical** — gestalt drift from synthetic example removal was not observed in 6 tests, but could compound over longer usage cycles. This needs longitudinal tracking.
+- **HOT integration was tested on one prompt architecture.** Different prompt structures (e.g., multi-turn conversation prompts, tool-use prompts, RAG prompts) may have different Tier 1/Tier 2 boundaries.
